@@ -16,8 +16,9 @@ def retrieve(key, token):
 
 
 def select(body):
-    return [
-        {
+    results = []
+    for entry in jmes("list.*", body):
+        result = {
             "title": entry["resolved_title"],
             "url": f"https://getpocket.com/read/{entry['item_id']}",
             "length": (
@@ -26,8 +27,8 @@ def select(body):
             ),
             "tags": jmes("tags.*.tag", entry),
         }
-        for entry in jmes("list.*", body)
-    ]
+        results.append(result)
+    return results
 
 
 def sort(items):
